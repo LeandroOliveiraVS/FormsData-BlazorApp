@@ -1,0 +1,73 @@
+﻿@inherits LayoutComponentBase
+@using FormulariosData.Components.Pages
+@using Microsoft.AspNetCore.Components.Authorization
+
+<div class="page">
+
+    <main>
+        <AuthorizeView>
+            <Authorized>
+                <div class="top-row px-4">
+                    <div class="top-row-left">
+                        <a class="bi bi-house-door" href="/">  Pagina Inicial</a>
+                    </div>
+                    <div class="top-row-right">
+                        <LogoutComponent />
+                    </div>
+                </div>
+            </Authorized>
+        </AuthorizeView>
+
+        <article class="content px-4">
+            <CascadingAuthenticationState>
+                @Body
+            </CascadingAuthenticationState>
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<style>
+    .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 3.5rem;
+        padding: 0 1.5rem;
+    }
+
+    .top-row-left a {
+        background-color: #f0f8f5;
+        border: 1px solid #0c7654;
+        display: flex;
+        border-radius: 8px;
+        padding: auto;
+        font-weight: 500;
+        font-size: 18px;
+        margin-bottom: 12px;
+        color: #fff;
+        text-decoration: none;
+        gap: 5px;
+    }
+
+        .top-row-left a:hover {
+            color: #667eea;
+        }
+
+    .top-row-right {
+        display: flex;
+        align-items: center;
+    }
+
+</style>
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+

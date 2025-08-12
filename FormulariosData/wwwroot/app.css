@@ -1,0 +1,468 @@
+/* Estilos personalizados para substituir o tema padrão do Syncfusion */
+
+/* Reset de cores do Syncfusion */
+:root {
+    --sf-primary: #0c7654;
+    --sf-primary-dark: #0c4454;
+    --sf-background: #c7dcd7;
+    --sf-surface: #fff;
+    --sf-text-primary: #0c4454;
+    --sf-border: #0c7654;
+}
+
+/* Estilos gerais da aplicação */
+body, html {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #c7dcd7 !important; /* Cor de fundo principal */
+}
+
+/* Container principal da aplicação */
+.main, main {
+    background-color: #c7dcd7;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Estilos para páginas */
+.page-container {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Títulos */
+h1, h2, h3 {
+    color: #0c7654 !important;
+    text-align: center;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+/* Parágrafo de descrição */
+p {
+    color: #0c4454;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* ESTILOS ESPECÍFICOS DO SYNCFUSION GRID */
+
+/* Container do Grid */
+.e-grid {
+    border: 2px solid #0c7654 !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    /* Header do Grid */
+    .e-grid .e-gridheader {
+        background-color: #0c7654 !important;
+        color: white !important;
+        border-bottom: 2px solid #0c4454 !important;
+    }
+
+    .e-grid .e-columnheader {
+        background-color: #0c7654 !important;
+        color: white !important;
+        font-weight: bold !important;
+        border-right: 1px solid rgba(255,255,255,0.2) !important;
+    }
+
+    .e-grid .e-headercell {
+        background-color: #0c7654 !important;
+        color: white !important;
+        border-right: 1px solid rgba(255,255,255,0.2) !important;
+    }
+
+    .e-grid .e-headercelldiv {
+        color: white !important;
+    }
+
+    /* Linhas do Grid */
+    .e-grid .e-row {
+        background-color: white !important;
+        border-bottom: 1px solid #e0e0e0 !important;
+    }
+
+        .e-grid .e-row:nth-child(even) {
+            background-color: #f9fdfc !important;
+        }
+
+        .e-grid .e-row:hover {
+            background-color: #e8f5f0 !important;
+        }
+
+    .e-grid .e-rowcell {
+        border-right: 1px solid #e0e0e0 !important;
+        color: #0c4454 !important;
+        padding: 8px 12px !important;
+    }
+
+    /* Barra de filtro */
+    .e-grid .e-filterbar {
+        background-color: #f0f8f5 !important;
+        border-bottom: 1px solid #0c7654 !important;
+    }
+
+    .e-grid .e-filterbarcell {
+        background-color: #f0f8f5 !important;
+        border-right: 1px solid #e0e0e0 !important;
+    }
+
+        .e-grid .e-filterbarcell input {
+            border: 1px solid #0c7654 !important;
+            border-radius: 4px !important;
+            padding: 6px 10px !important;
+            background-color: white !important;
+            color: #0c4454 !important;
+        }
+
+            .e-grid .e-filterbarcell input:focus {
+                border-color: #0c4454 !important;
+                box-shadow: 0 0 0 2px rgba(12, 118, 84, 0.2) !important;
+                outline: none !important;
+            }
+
+    /* Toolbar de pesquisa */
+    .e-grid .e-toolbar {
+        background-color: #f0f8f5 !important;
+        border-bottom: 1px solid #0c7654 !important;
+        padding: 10px !important;
+    }
+
+    .e-grid .e-search input {
+        border: 1px solid #0c7654 !important;
+        border-radius: 4px !important;
+        padding: 8px 12px !important;
+        background-color: white !important;
+        color: #0c4454 !important;
+    }
+
+        .e-grid .e-search input:focus {
+            border-color: #0c4454 !important;
+            box-shadow: 0 0 0 2px rgba(12, 118, 84, 0.2) !important;
+            outline: none !important;
+        }
+
+    /* Paginação */
+    .e-grid .e-gridpager {
+        background-color: #f0f8f5 !important;
+        border-top: 2px solid #0c7654 !important;
+        padding: 10px !important;
+    }
+
+    .e-grid .e-pager .e-pagercontainer {
+        color: #0c4454 !important;
+    }
+
+    .e-grid .e-pager .e-numericcontainer .e-link {
+        background-color: white !important;
+        color: #0c7654 !important;
+        border: 1px solid #0c7654 !important;
+        border-radius: 4px !important;
+        margin: 0 2px !important;
+    }
+
+        .e-grid .e-pager .e-numericcontainer .e-link:hover {
+            background-color: #0c7654 !important;
+            color: white !important;
+        }
+
+    .e-grid .e-pager .e-numericcontainer .e-currentitem {
+        background-color: #0c4454 !important;
+        color: white !important;
+        border-color: #0c4454 !important;
+    }
+
+    /* Botões de navegação da paginação */
+    .e-grid .e-pager .e-prevpagedisabled,
+    .e-grid .e-pager .e-nextpagedisabled {
+        opacity: 0.5 !important;
+    }
+
+    .e-grid .e-pager .e-prevpage,
+    .e-grid .e-pager .e-nextpage,
+    .e-grid .e-pager .e-firstpage,
+    .e-grid .e-pager .e-lastpage {
+        background-color: white !important;
+        color: #0c7654 !important;
+        border: 1px solid #0c7654 !important;
+        border-radius: 4px !important;
+        margin: 0 2px !important;
+    }
+
+        .e-grid .e-pager .e-prevpage:hover,
+        .e-grid .e-pager .e-nextpage:hover,
+        .e-grid .e-pager .e-firstpage:hover,
+        .e-grid .e-pager .e-lastpage:hover {
+            background-color: #0c7654 !important;
+            color: white !important;
+        }
+
+    /* Scrollbar personalizada */
+    .e-grid .e-content::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .e-grid .e-content::-webkit-scrollbar-track {
+        background-color: #f0f8f5;
+        border-radius: 4px;
+    }
+
+    .e-grid .e-content::-webkit-scrollbar-thumb {
+        background-color: #0c7654;
+        border-radius: 4px;
+    }
+
+        .e-grid .e-content::-webkit-scrollbar-thumb:hover {
+            background-color: #0c4454;
+        }
+
+/* --- Estilos para cards na pagina principal --- */
+
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.dashboard-card, .dashboard-card-placeholder {
+    flex: 1;
+    min-width: 280px;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.dashboard-card {
+    background-color: #f0f8f5;
+    border: 1px solid #0c7654;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+.dashboard-card-placeholder {
+    border: 2px dashed #ccc;
+    color: #aaa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-card-icon {
+    font-size: 3rem;
+    color: #4caf50;
+    margin-bottom: 1rem;
+}
+
+.dashboard-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-card-description {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.button {
+    background-color: #0c7654;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: auto;
+    margin-top: 12px;
+    transition: background-color 0.3s ease;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+    .button:hover {
+        background-color: #0c4454;
+    }
+
+/* OVERRIDE ESPECÍFICO PARA REMOVER CORES ROXAS DO SYNCFUSION */
+.e-control.e-lib.e-grid,
+.e-control.e-lib,
+.e-lib {
+    --primary: #0c7654 !important;
+    --primary-dark: #0c4454 !important;
+}
+
+/* Remove qualquer cor roxa restante */
+*[style*="rgb(103, 58, 183)"],
+*[style*="#673ab7"],
+*[class*="purple"],
+*[class*="violet"] {
+    color: #0c7654 !important;
+    background-color: transparent !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .page-container {
+        margin: 0 10px;
+        padding: 15px;
+    }
+
+    .e-grid {
+        font-size: 12px;
+    }
+
+        .e-grid .e-rowcell {
+            padding: 6px 8px !important;
+        }
+}
+
+/* --- Estilos para usuario --- */
+.user-section {
+    margin-top: auto;
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c7dcd7 20%, #0c4454 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.user-name {
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.user-email {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+}
+
+/* --- Login Prompt Styles --- */
+.login-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+.login-prompt-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.login-prompt h1 {
+    font-size: 3rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.login-prompt p {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 2rem;
+}
+
+.login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+.btn-icon {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+}
+
+/* Ajuste para ícones Bootstrap Icons */
+.bi {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-right: 12px;
+    font-size: 1.5em;
+    color: var(--sf-text-primary); /* Ícones em cor de texto */
+}
+
+    .bi:hover {
+        color: var(--sf-primary-dark); /* Ícones mudam de cor no hover */
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .welcome-section h1 {
+        font-size: 2rem;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .dashboard-card {
+        padding: 1.5rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .login-prompt h1 {
+        font-size: 2.5rem;
+    }
+}

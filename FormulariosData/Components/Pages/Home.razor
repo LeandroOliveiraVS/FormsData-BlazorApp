@@ -1,0 +1,62 @@
+﻿@page "/"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Routing
+
+<PageTitle>Home</PageTitle>
+
+<h1>Pagina Principal</h1>
+
+<AuthorizeView>
+    <Authorized>
+        <div class="dashboard-container">
+            <a href="/recebimentos"
+               class="dashboard-card" target="_blank" rel="noopener noreferrer">
+                <div class="dashboard-card-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+                <div class="dashboard-card-title">
+                    Recebimentos
+                </div>
+                <div class="card-description">
+                    <p>Planilha de Recebimentos</p>
+                </div>
+            </a>
+            <div class="dashboard-card-placeholder">
+                <div class="dashboard-card-icon">
+                    <i class="fa-solid fa-file-invoice-dollar "></i>
+                </div>
+                <div class="card-description">
+                    <p>Teste</p>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+                <div class="login-prompt">
+                    <div class="login-prompt-content">
+                        <h1>Sistema de Dados dos Formulários</h1>
+                        <p>Faça login para acessar o sistema de gestão de dados.</p>
+                        <div class="login-options">
+                            <a href="/login" class="button">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                                    <polyline points="10,17 15,12 10,7"/>
+                                    <line x1="15" y1="12" x2="3" y2="12"/>
+                                </svg>
+                                Fazer Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string GetUserName(System.Security.Claims.ClaimsPrincipal user)
+    {
+        return user.FindFirst("name")?.Value ??
+               user.FindFirst("given_name")?.Value ??
+               user.Identity?.Name ??
+               "Usuário";
+    }
+}

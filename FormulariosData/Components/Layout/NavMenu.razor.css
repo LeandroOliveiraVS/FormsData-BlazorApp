@@ -1,0 +1,108 @@
+/* Definições de variáveis (assumindo que estão em :root no site.css) */
+:root {
+    --sf-primary: #0c7654;
+    --sf-primary-dark: #0c4454;
+    --sf-background: #c7dcd7;
+    --sf-surface: #ffffff;
+    --sf-text-primary: #0c4454;
+    --sf-border: #0c7654;
+}
+
+/* Sobrescreve estilos gerais do navbar-dark e MudBlazor */
+.navbar-dark,
+.mud-theme {
+    background-color: var(--sf-primary) !important;
+}
+
+/* Estilo geral do menu (top row) */
+.top-row {
+    background-color: var(--sf-primary) !important;
+    padding: 15px 20px;
+    border-bottom: 2px solid var(--sf-primary-dark);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand {
+    color: var(--sf-surface) !important;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Menu visível com máxima especificidade */
+.nav-scrollable {
+    background-color: var(--sf-surface) !important; /* Fundo branco para legibilidade */
+    border-right: 2px solid var(--sf-border);
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    align-items: center;
+}
+
+.nav-scrollable .nav-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--sf-background);
+}
+
+    .nav-item:hover {
+        background-color: var(--sf-background); /* Fundo claro no hover */
+        color: var(--sf-primary) !important; /* Texto verde no hover */
+        border-radius: 5px;
+    }
+
+    .nav-scrollable .custom-nav-link {
+        color: var(--sf-text-primary) !important; /* Texto escuro para legibilidade */
+        font-weight: bold;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        transition: color 0.3s, background-color 0.3s;
+    }
+
+        .nav-scrollable .nav-link:focus {
+            background-color: var(--sf-background); /* Fundo claro no hover */
+            color: var(--sf-primary) !important; /* Texto verde no hover */
+            border-radius: 5px;
+        }
+
+        .nav-scrollable .nav-link.active {
+            background-color: var(--sf-primary); /* Fundo verde no ativo */
+            color: var(--sf-surface) !important; /* Texto branco no ativo */
+            border-radius: 5px;
+        }
+
+/* Ajuste para ícones Bootstrap Icons */
+.bi {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-right: 12px;
+    font-size: 1.5em;
+    color: var(--sf-text-primary); /* Ícones em cor de texto */
+}
+
+    .bi:hover {
+        color: var(--sf-primary-dark); /* Ícones mudam de cor no hover */
+    }
+
+/* Estilo responsivo */
+@media (max-width: 600px) {
+    .top-row {
+        padding: 10px;
+    }
+
+    .navbar-brand {
+        font-size: 1.1em;
+    }
+
+    .nav-scrollable {
+        max-height: 60vh;
+        padding: 10px 0;
+    }
+
+    .nav-scrollable .nav-item {
+        padding: 10px;
+    }
+
+}
