@@ -1,0 +1,250 @@
+﻿@page "/recebimentos"
+@rendermode InteractiveServer
+@attribute [Authorize]
+@implements IDisposable
+
+@using FormulariosData.Models
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Data
+@using Syncfusion.Blazor.DropDowns
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+
+<PageTitle>Tabela de Recebimentos</PageTitle>
+
+<div class="top-row"></div>
+<div class="top-row">
+    <div class="bi">
+        <a class="button bi-arrow-left-square-fill" href="/"> Voltar</a>
+    </div>
+    <h1>Tabela de Recebimentos</h1>
+</div>
+
+
+    @if (_isAuthenticated && !_disposed)
+    {
+        <SfGrid TValue="Recebimento"
+                AllowPaging="true"
+                AllowSorting="true"
+                AllowFiltering="true">
+
+            <SfDataManager Url="/api/Recebimentos" Adaptor="Syncfusion.Blazor.Adaptors.UrlAdaptor"></SfDataManager>
+
+            <GridPageSettings PageSize="20"></GridPageSettings>
+
+            <!-- Configuração dos filtros -->
+            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+
+            <GridColumns>
+                <GridColumn Field=@nameof(Recebimento.IdRecebimento)
+                            HeaderText="ID"
+                            Width="80"
+                            IsPrimaryKey="true"
+                            AllowFiltering="false">
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.Registro)
+                            HeaderText="Registo"
+                            Format="dd/MM/yyyy HH:mm"
+                            Width="170"
+                            AllowFiltering="false">
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.NomeRecebedor)
+                            HeaderText="Recebedor"
+                            Width="200">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.EmailRecebedor)
+                            HeaderText="E-mail"
+                            Width="220">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.NomeFornecedor)
+                            HeaderText="Fornecedor"
+                            Width="200">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.NumeroNotaFiscal)
+                            HeaderText="Nota Fiscal"
+                            Width="150">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.LocalRecebimento)
+                            HeaderText="Local de Recebimento"
+                            Width="150">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.DataRecebimento)
+                            HeaderText="Data Receb."
+                            Format="d"
+                            Width="130">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.HoraRecebimento)
+                            HeaderText="Hora"
+                            Format="t"
+                            Width="100">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+
+                <GridColumn Field=@nameof(Recebimento.Observacoes)
+                            HeaderText="Observações"
+                            Width="250">
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
+                </GridColumn>
+            </GridColumns>
+
+            <GridEvents TValue="Recebimento"
+                        OnActionBegin="OnActionBegin"
+                        OnActionComplete="OnActionComplete"
+                        OnActionFailure="OnActionFailure">
+            </GridEvents>
+        </SfGrid>
+    }
+    else if (!_isAuthenticated)
+    {
+        <div class="alert alert-warning">
+            <h4>Acesso Negado</h4>
+            <p>Você precisa estar autenticado para visualizar esta página.</p>
+            <button class="btn btn-primary" @onclick="RedirectToLogin">Fazer Login</button>
+        </div>
+    }
+    else if (_disposed)
+    {
+        <div class="alert alert-info">
+            <p>Componente foi finalizado.</p>
+        </div>
+    }
+
+
+@code
+{
+    private bool _disposed = false;
+    private bool _isAuthenticated = false;
+    private IDictionary<string, string> _headers = new Dictionary<string, string>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (_disposed) return;
+        
+        try
+        {
+            // Verifica estado de autenticação
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            _isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+            
+            Console.WriteLine($"Usuário autenticado: {_isAuthenticated}");
+            
+            if (_isAuthenticated)
+            {
+                // Adiciona headers de autenticação se necessário
+                _headers["Accept"] = "application/json";
+                _headers["Content-Type"] = "application/json";
+            }
+            
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro na inicialização: {ex.Message}");
+        }
+    }
+
+    private void RedirectToLogin()
+    {
+        Navigation.NavigateTo("/login", true);
+    }
+
+    private void OnActionBegin(ActionEventArgs<Recebimento> args)
+    {
+        if (_disposed) return;
+        
+        try
+        {
+            Console.WriteLine($"Ação iniciada: {args.RequestType}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro em OnActionBegin: {ex.Message}");
+        }
+    }
+
+    private void OnActionComplete(ActionEventArgs<Recebimento> args)
+    {
+        if (_disposed) return;
+        
+        try
+        {
+            Console.WriteLine($"Ação completada: {args.RequestType}");
+            SafeStateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro em OnActionComplete: {ex.Message}");
+        }
+    }
+
+    private void OnActionFailure(FailureEventArgs args)
+    {
+        if (_disposed) return;
+        
+        try
+        {
+            Console.WriteLine($"Falha na ação: {args.Error?.Message}");
+            
+            // Se for erro de autenticação, redireciona para login
+            if (args.Error?.Message?.Contains("Unauthorized") == true)
+            {
+                Console.WriteLine("Erro de autorização detectado, redirecionando para login");
+                InvokeAsync(() => Navigation.NavigateTo("/login", true));
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro em OnActionFailure: {ex.Message}");
+        }
+    }
+
+    private void SafeStateHasChanged()
+    {
+        if (_disposed) return;
+
+        try
+        {
+            InvokeAsync(() =>
+            {
+                if (!_disposed)
+                {
+                    StateHasChanged();
+                }
+            });
+        }
+        catch (ObjectDisposedException)
+        {
+            // Componente já foi descartado, ignora
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao atualizar estado: {ex.Message}");
+        }
+    }
+
+    public void Dispose()
+    {
+        if (_disposed) return;
+        
+        _disposed = true;
+        Console.WriteLine("Componente Recebimentos sendo descartado");
+        
+        // O Blazor e Syncfusion lidam automaticamente com a limpeza do Grid
+        // Não precisamos fazer descarte manual específico do SfGrid
+    }
+}

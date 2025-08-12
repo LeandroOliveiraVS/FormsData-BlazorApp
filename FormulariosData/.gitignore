@@ -1,0 +1,15 @@
+﻿# Ficheiros de dependências e compilação
+[Bb]in/
+[Oo]bj/
+
+# Ficheiros gerados pelo Visual Studio
+*.vs/
+*.user
+*.suo
+
+# Ficheiros de segredos
+secrets.json
+appsettings.Development.json
+
+# Outros
+*.nupkg

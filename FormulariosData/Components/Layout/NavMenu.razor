@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Formularios</a>
+    </div>
+</div>
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').checked = false">
+    <nav class="flex-column">
+        <AuthorizeView>
+            <Authorized>
+                <div class="nav-item">
+                    <NavLink class="custom-nav-link" href="/" Match="NavLinkMatch.All">
+                        <span class="bi bi-house-door-fill" aria-hidden="true"></span> Inicio
+                    </NavLink>
+                </div>
+                <div class="nav-item">
+                    <NavLink class="custom-nav-link" href="/recebimentos">
+                        <span class="bi bi-box2-fill" aria-hidden="true"></span> Recebimentos
+                    </NavLink>
+                </div>
+
+                <!-- Seção do usuário -->
+                <div class="user-section">
+                    <div class="user-info">
+                        <span class="user-avatar">
+                            @(GetUserInitials())
+                        </span>
+                        <div class="user-details">
+                            <span class="user-name">@_userName</span>
+                            <span class="user-email">@_userEmail</span>
+                        </div>
+                    </div>
+                </div>
+            </Authorized>
+            <NotAuthorized>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/login">
+                        <span class="bi bi-person-badge-nav-menu" aria-hidden="true"></span> Entrar
+                    </NavLink>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+    </nav>
+</div>
+
+@code {
+    private bool _isAuthenticated = false;
+    private string _userName = "";
+    private string _userEmail = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateUserInfo();
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+    }
+
+    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        await UpdateUserInfo();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateUserInfo()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            _isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+
+            if (_isAuthenticated)
+            {
+                _userName = authState.User.FindFirst("name")?.Value ??
+                           authState.User.FindFirst("given_name")?.Value ??
+                           authState.User.Identity?.Name ??
+                           "Usuário";
+
+                _userEmail = authState.User.FindFirst("email")?.Value ?? "";
+            }
+            else
+            {
+                _userName = "";
+                _userEmail = "";
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao atualizar informações do usuário: {ex.Message}");
+        }
+    }
+
+    private string GetUserInitials()
+    {
+        if (string.IsNullOrEmpty(_userName))
+            return "U";
+
+        var parts = _userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2)
+        {
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        }
+        return _userName.Substring(0, Math.Min(2, _userName.Length)).ToUpper();
+    }
+
+    public void Dispose()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+}
+

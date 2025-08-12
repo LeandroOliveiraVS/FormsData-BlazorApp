@@ -1,0 +1,10 @@
+﻿<AuthorizeView>
+    <Authorized Context="authContext">
+        @* CORRIGIDO: A variável "authContext" agora está definida no atributo Context *@
+        <span class="text-white me-3">Olá, @authContext.User.Identity?.Name!</span>
+        <a href="/logout" class="btn btn-outline-light">Logout</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="/login" class="btn btn-light">Login com Google</a>
+    </NotAuthorized>
+</AuthorizeView>

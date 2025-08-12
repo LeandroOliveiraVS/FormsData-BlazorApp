@@ -1,0 +1,193 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="logout-section">
+    @if (_isAuthenticated)
+    {
+        <div class="user-info">
+            <span class="user-avatar">@(GetUserInitials())</span>
+            <span class="user-name">Olá, @_userName</span>
+            <button class="logout-btn" @onclick="Logout" title="Sair do sistema">
+                <svg class="logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16,17 21,12 16,7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                </svg>
+                Sair
+            </button>
+        </div>
+    }
+    else
+    {
+        <a href="/login" class="login-link">
+            <svg class="login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10,17 15,12 10,7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            Entrar
+        </a>
+    }
+</div>
+
+<style>
+    .logout-section {
+        background-color: #f0f8f5;
+        border: 1px solid #0c7654;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+    }
+
+    .user-name {
+        color: #374151;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .logout-btn, .login-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: none;
+        background: #ef4444;
+        color: white;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+    }
+
+    .login-link {
+        background: #10b981;
+    }
+
+    .logout-btn:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+    }
+
+    .login-link:hover {
+        background: #059669;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .logout-icon, .login-icon {
+        width: 16px;
+        height: 16px;
+        stroke-width: 2;
+    }
+
+    /* Responsive
+    media (max-width: 768px) {
+        .user-info
+
+    {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .user-name {
+        font-size: 12px;
+    }
+
+    .logout-btn, .login-link {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    }*/
+</style>
+
+@code {
+    private bool _isAuthenticated = false;
+    private string _userName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateAuthenticationState();
+
+        // Escuta mudanças no estado de autenticação
+        AuthenticationStateProvider.AuthenticationStateChanged += OnAuthenticationStateChanged;
+    }
+
+    private async void OnAuthenticationStateChanged(Task<AuthenticationState> task)
+    {
+        await UpdateAuthenticationState();
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task UpdateAuthenticationState()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            _isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
+            _userName = authState.User.Identity?.Name ?? "";
+
+            // Pega o nome do claim se disponível
+            if (_isAuthenticated && string.IsNullOrEmpty(_userName))
+            {
+                _userName = authState.User.FindFirst("name")?.Value ??
+                           authState.User.FindFirst("given_name")?.Value ??
+                           authState.User.FindFirst("email")?.Value ??
+                           "Usuário";
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao verificar estado de autenticação: {ex.Message}");
+        }
+    }
+
+    private async Task Logout()
+    {
+        try
+        {
+            // Chama o endpoint de logout via JavaScript para garantir que funcione
+            await JSRuntime.InvokeVoidAsync("window.location.href", "/logout");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro durante logout: {ex.Message}");
+            // Fallback: redireciona diretamente
+            Navigation.NavigateTo("/logout", true);
+        }
+    }
+
+    public void Dispose()
+    {
+        AuthenticationStateProvider.AuthenticationStateChanged -= OnAuthenticationStateChanged;
+    }
+
+    private string GetUserInitials()
+    {
+        if (string.IsNullOrEmpty(_userName))
+            return "U";
+
+        var parts = _userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length >= 2)
+        {
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        }
+        return _userName.Substring(0, Math.Min(2, _userName.Length)).ToUpper();
+    }
+}
