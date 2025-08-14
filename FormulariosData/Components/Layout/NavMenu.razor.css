@@ -41,37 +41,37 @@
     align-items: center;
 }
 
-.nav-scrollable .nav-item {
-    padding: 12px 15px;
-    border-bottom: 1px solid var(--sf-background);
+    .nav-scrollable .nav-item {
+        padding: 12px 15px;
+        border-bottom: 1px solid var(--sf-background);
+    }
+
+.nav-item:hover {
+    background-color: var(--sf-background); /* Fundo claro no hover */
+    color: var(--sf-primary) !important; /* Texto verde no hover */
+    border-radius: 5px;
 }
 
-    .nav-item:hover {
-        background-color: var(--sf-background); /* Fundo claro no hover */
-        color: var(--sf-primary) !important; /* Texto verde no hover */
-        border-radius: 5px;
-    }
+.nav-scrollable .custom-nav-link {
+    color: var(--sf-text-primary) !important; /* Texto escuro para legibilidade */
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s, background-color 0.3s;
+}
 
-    .nav-scrollable .custom-nav-link {
-        color: var(--sf-text-primary) !important; /* Texto escuro para legibilidade */
-        font-weight: bold;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        transition: color 0.3s, background-color 0.3s;
-    }
+.nav-scrollable .nav-link:focus {
+    background-color: var(--sf-background); /* Fundo claro no hover */
+    color: var(--sf-primary) !important; /* Texto verde no hover */
+    border-radius: 5px;
+}
 
-        .nav-scrollable .nav-link:focus {
-            background-color: var(--sf-background); /* Fundo claro no hover */
-            color: var(--sf-primary) !important; /* Texto verde no hover */
-            border-radius: 5px;
-        }
-
-        .nav-scrollable .nav-link.active {
-            background-color: var(--sf-primary); /* Fundo verde no ativo */
-            color: var(--sf-surface) !important; /* Texto branco no ativo */
-            border-radius: 5px;
-        }
+.nav-scrollable .nav-link.active {
+    background-color: var(--sf-primary); /* Fundo verde no ativo */
+    color: var(--sf-surface) !important; /* Texto branco no ativo */
+    border-radius: 5px;
+}
 
 /* Ajuste para ícones Bootstrap Icons */
 .bi {
@@ -101,8 +101,7 @@
         padding: 10px 0;
     }
 
-    .nav-scrollable .nav-item {
-        padding: 10px;
-    }
-
+        .nav-scrollable .nav-item {
+            padding: 10px;
+        }
 }

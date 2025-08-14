@@ -10,8 +10,8 @@ namespace FormulariosData.Data
         {     
         }
 
-        // Esta propriedade representa a nossa tabela "Recebimentos" no banco de dados.
+        // Esta propriedade representa as nossas tabelas no banco de dados.
         public DbSet<Recebimento> Recebimentos { get; set; }
-        // public DbSet<AppUser> GoogleUsers { get; set; }
+        public DbSet<CheckListVeiculos> CheckListVeiculos { get; set; }
     }
 }
