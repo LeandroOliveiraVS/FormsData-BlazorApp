@@ -1,4 +1,4 @@
-/* Definições de variáveis (assumindo que estão em :root no site.css) */
+/* ===== VARIÁVEIS CSS ===== */
 :root {
     --sf-primary: #0c7654;
     --sf-primary-dark: #0c4454;
@@ -6,102 +6,422 @@
     --sf-surface: #ffffff;
     --sf-text-primary: #0c4454;
     --sf-border: #0c7654;
+    --sidebar-width-collapsed: 80px;
+    --sidebar-width-expanded: 220px;
+    --sidebar-transition: all 0.3s ease;
 }
 
-/* Sobrescreve estilos gerais do navbar-dark e MudBlazor */
-.navbar-dark,
-.mud-theme {
-    background-color: var(--sf-primary) !important;
-}
-
-/* Estilo geral do menu (top row) */
-.top-row {
-    background-color: var(--sf-primary) !important;
-    padding: 15px 20px;
-    border-bottom: 2px solid var(--sf-primary-dark);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* ===== SIDEBAR PRINCIPAL ===== */
+.sidebar {
+    background: linear-gradient(180deg, var(--sf-primary) 0%, var(--sf-primary-dark) 100%);
+    width: var(--sidebar-width-collapsed);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    z-index: 1000;
+    transition: var(--sidebar-transition);
+    overflow: hidden;
+}
+
+    .sidebar:hover {
+        width: var(--sidebar-width-expanded);
+    }
+
+        .sidebar:hover .nav-text {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar:hover .user-details {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar:hover .custom-nav-link {
+            justify-content: flex-start;
+            padding-left: 15px;
+        }
+
+        .sidebar:hover .nav-separator {
+            width: calc(var(--sidebar-width-expanded) - 40px);
+        }
+
+/* ===== HEADER DO NAVBAR ===== */
+.navbar-header {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    margin-bottom: 30px;
+    position: relative;
 }
 
 .navbar-brand {
-    color: var(--sf-surface) !important;
-    font-size: 1.3em;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-/* Menu visível com máxima especificidade */
-.nav-scrollable {
-    background-color: var(--sf-surface) !important; /* Fundo branco para legibilidade */
-    border-right: 2px solid var(--sf-border);
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    align-items: center;
-}
-
-    .nav-scrollable .nav-item {
-        padding: 12px 15px;
-        border-bottom: 1px solid var(--sf-background);
-    }
-
-.nav-item:hover {
-    background-color: var(--sf-background); /* Fundo claro no hover */
-    color: var(--sf-primary) !important; /* Texto verde no hover */
-    border-radius: 5px;
-}
-
-.nav-scrollable .custom-nav-link {
-    color: var(--sf-text-primary) !important; /* Texto escuro para legibilidade */
-    font-weight: bold;
-    text-decoration: none;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    transition: color 0.3s, background-color 0.3s;
-}
-
-.nav-scrollable .nav-link:focus {
-    background-color: var(--sf-background); /* Fundo claro no hover */
-    color: var(--sf-primary) !important; /* Texto verde no hover */
-    border-radius: 5px;
-}
-
-.nav-scrollable .nav-link.active {
-    background-color: var(--sf-primary); /* Fundo verde no ativo */
-    color: var(--sf-surface) !important; /* Texto branco no ativo */
-    border-radius: 5px;
-}
-
-/* Ajuste para ícones Bootstrap Icons */
-.bi {
-    font-size: 1.1em;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
     font-weight: bold;
-    margin-right: 12px;
-    font-size: 1.5em;
-    color: var(--sf-text-primary); /* Ícones em cor de texto */
+    transition: var(--sidebar-transition);
 }
 
-    .bi:hover {
-        color: var(--sf-primary-dark); /* Ícones mudam de cor no hover */
+    .navbar-brand:hover {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        text-decoration: none;
+        transform: scale(1.05);
     }
 
-/* Estilo responsivo */
-@media (max-width: 600px) {
-    .top-row {
-        padding: 10px;
+/* ===== NAVEGAÇÃO ===== */
+.nav-scrollable {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.custom-navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content:center;
+}
+
+.custom-nav-item {
+    width: 100%;
+    margin-bottom: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 1.5rem;
+}
+
+.custom-nav-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    transition: var(--sidebar-transition);
+    position: relative;
+    background: transparent;
+    border: 1px solid transparent;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sidebar:hover .custom-nav-link {
+    width: calc(var(--sidebar-width-expanded) - 40px);
+    justify-content: flex-start;
+    padding-left: 15px;
+}
+
+.custom-nav-link:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--sf-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    text-decoration: none;
+}
+
+.custom-nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* ===== ÍCONES ===== */
+.custom-nav-link .bi {
+    font-size: 25px;
+    margin: 0;
+    color: #ffffff ;
+    min-width: 18px;
+    flex-shrink: 0;
+}
+
+/* ===== TEXTO DOS LINKS ===== */
+.nav-text {
+    margin-left: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* ===== SEPARADORES ===== */
+.nav-separator {
+    width: 40px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 15px auto;
+    transition: var(--sidebar-transition);
+}
+
+.nav-separator-null {
+    width: 40px;
+    height: 1px;
+    background: transparent;
+    margin: 15px auto;
+    transition: var(--sidebar-transition);
+}
+
+/* ===== ÁREA DO USUÁRIO ===== */
+.user-section {
+    margin-top: auto;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    justify-content: center;
+    transition: var(--sidebar-transition);
+}
+
+.sidebar:hover .user-info {
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.user-initials {
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.user-name {
+    color: white;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+.user-email {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+/* ===== TOGGLE BUTTON ===== */
+.navbar-toggler {
+    appearance: none;
+    cursor: pointer;
+    width: 35px;
+    height: 25px;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.25rem;
+    border-radius: 6px;
+    transition: var(--sidebar-transition);
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    display: none;
+}
+
+    .navbar-toggler:hover {
+        background-color: rgba(255, 255, 255, 0.1);
     }
 
-    .navbar-brand {
-        font-size: 1.1em;
+    .navbar-toggler:focus {
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
     }
 
-    .nav-scrollable {
-        max-height: 60vh;
-        padding: 10px 0;
+/* ===== ESTADOS MOBILE ===== */
+@media (max-width: 768px) {
+    .navbar-toggler {
+        display: block;
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 1001;
     }
 
-        .nav-scrollable .nav-item {
-            padding: 10px;
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+        .sidebar.show {
+            transform: translateX(0);
+            width: var(--sidebar-width-expanded);
         }
+
+            .sidebar.show .nav-text {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .sidebar.show .user-details {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .sidebar.show .custom-nav-link {
+                width: calc(var(--sidebar-width-expanded) - 40px);
+                justify-content: flex-start;
+                padding-left: 15px;
+            }
+
+            .sidebar.show .nav-separator {
+                width: calc(var(--sidebar-width-expanded) - 40px);
+            }
+
+            .sidebar.show .user-info {
+                justify-content: flex-start;
+                padding-left: 10px;
+            }
+
+            /* Overlay para fechar o menu no mobile */
+            .sidebar.show::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: var(--sidebar-width-expanded);
+                width: calc(100vw - var(--sidebar-width-expanded));
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: -1;
+            }
+
+        /* Desabilita hover no mobile */
+        .sidebar:hover {
+            width: var(--sidebar-width-collapsed);
+        }
+
+            .sidebar:hover .nav-text {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .sidebar:hover .user-details {
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            .sidebar:hover .custom-nav-link {
+                justify-content: center;
+                padding-left: 0;
+            }
+
+            .sidebar:hover .user-info {
+                justify-content: center;
+                padding-left: 0;
+            }
+
+        .sidebar.show:hover {
+            width: var(--sidebar-width-expanded);
+        }
+
+            .sidebar.show:hover .nav-text {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .sidebar.show:hover .user-details {
+                opacity: 1;
+                visibility: visible;
+            }
+}
+
+/* ===== ACESSIBILIDADE ===== */
+.custom-nav-link:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    .custom-nav-link,
+    .nav-text,
+    .user-info,
+    .user-details,
+    .nav-separator {
+        transition: none;
+    }
+}
+
+/* ===== SCROLLBAR CUSTOMIZADA ===== */
+.nav-scrollable::-webkit-scrollbar {
+    width: 4px;
+}
+
+.nav-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.nav-scrollable::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+}
+
+    .nav-scrollable::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+/* ===== AJUSTE PARA O CONTEÚDO PRINCIPAL ===== */
+.main {
+    margin-left: var(--sidebar-width-collapsed);
+    transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .main {
+        margin-left: 0;
+    }
 }

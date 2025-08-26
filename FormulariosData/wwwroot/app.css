@@ -1,6 +1,4 @@
 /* Estilos personalizados para substituir o tema padrão do Syncfusion */
-
-/* Reset de cores do Syncfusion */
 :root {
     --sf-primary: #0c7654;
     --sf-primary-dark: #0c4454;
@@ -8,7 +6,50 @@
     --sf-surface: #fff;
     --sf-text-primary: #0c4454;
     --sf-border: #0c7654;
+    --sidebar-width-collapsed: 80px;
+    --sidebar-width-expanded: 220px;
+    --sidebar-transition: all 0.3s ease;
 }
+
+/* ===== SIDEBAR NAVIGATION ===== */
+.sidebar {
+    background: linear-gradient(180deg, var(--sf-primary) 0%, var(--sf-primary-dark) 100%);
+    width: var(--sidebar-width-collapsed);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    z-index: 1000;
+    transition: var(--sidebar-transition);
+    overflow: hidden;
+}
+
+    .sidebar:hover {
+        width: var(--sidebar-width-expanded);
+    }
+
+        .sidebar:hover .nav-text {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar:hover .user-details {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar:hover .custom-nav-link {
+            justify-content: flex-start;
+            padding-left: 15px;
+        }
+
+        .sidebar:hover .nav-separator {
+            width: calc(var(--sidebar-width-expanded) - 40px);
+        }
 
 /* Estilos gerais da aplicação */
 body, html {
@@ -29,7 +70,7 @@ body, html {
 .page-container {
     padding: 20px;
     border-radius: 8px;
-    max-width: 1200px;
+    max-width: 1800px;
     margin: 0 auto;
 }
 
@@ -280,6 +321,10 @@ p {
     color: #777;
 }
 
+.barra-invisivel {
+    max-width: 10px;
+}
+
 .button {
     background-color: #0c7654;
     color: white;
@@ -436,7 +481,7 @@ p {
     font-weight: bold;
     margin-right: 12px;
     font-size: 1.5em;
-    color: var(--sf-text-primary); /* Ícones em cor de texto */
+    /*color: var(--sf-text-primary); Ícones em cor de texto */
 }
 
     .bi:hover {

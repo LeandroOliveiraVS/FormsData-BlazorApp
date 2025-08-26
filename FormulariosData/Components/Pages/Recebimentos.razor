@@ -1,250 +1,122 @@
 ﻿@page "/recebimentos"
 @rendermode InteractiveServer
 @attribute [Authorize]
-@implements IDisposable
 
 @using FormulariosData.Models
-@using Syncfusion.Blazor.Grids
-@using Syncfusion.Blazor.Data
-@using Syncfusion.Blazor.DropDowns
+@using FormulariosData.Data
+@using Microsoft.EntityFrameworkCore
+@using System.Linq.Dynamic.Core
+@inject IDbContextFactory<ApplicationDbContext> DbContextFactory
 
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject NavigationManager Navigation
+<PageTitle>Tabela de Recebimentos (MudBlazor)</PageTitle>
 
-<PageTitle>Tabela de Recebimentos</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <h1>Tabela de Recebimentos</h1>
 
-<div class="top-row"></div>
-<div class="top-row">
-    <div class="bi">
-        <a class="button bi-arrow-left-square-fill" href="/"> Voltar</a>
-    </div>
-    <h1>Tabela de Recebimentos</h1>
-</div>
-
-
-    @if (_isAuthenticated && !_disposed)
-    {
-        <SfGrid TValue="Recebimento"
-                AllowPaging="true"
-                AllowSorting="true"
-                AllowFiltering="true">
-
-            <SfDataManager Url="/api/Recebimentos" Adaptor="Syncfusion.Blazor.Adaptors.UrlAdaptor"></SfDataManager>
-
-            <GridPageSettings PageSize="20"></GridPageSettings>
-
-            <!-- Configuração dos filtros -->
-            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-
-            <GridColumns>
-                <GridColumn Field=@nameof(Recebimento.IdRecebimento)
-                            HeaderText="ID"
-                            Width="80"
-                            IsPrimaryKey="true"
-                            AllowFiltering="false">
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.Registro)
-                            HeaderText="Registo"
-                            Format="dd/MM/yyyy HH:mm"
-                            Width="170"
-                            AllowFiltering="false">
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.NomeRecebedor)
-                            HeaderText="Recebedor"
-                            Width="200">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.EmailRecebedor)
-                            HeaderText="E-mail"
-                            Width="220">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.NomeFornecedor)
-                            HeaderText="Fornecedor"
-                            Width="200">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.NumeroNotaFiscal)
-                            HeaderText="Nota Fiscal"
-                            Width="150">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.LocalRecebimento)
-                            HeaderText="Local de Recebimento"
-                            Width="150">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.DataRecebimento)
-                            HeaderText="Data Receb."
-                            Format="d"
-                            Width="130">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.HoraRecebimento)
-                            HeaderText="Hora"
-                            Format="t"
-                            Width="100">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-
-                <GridColumn Field=@nameof(Recebimento.Observacoes)
-                            HeaderText="Observações"
-                            Width="250">
-                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.FilterBar"></GridFilterSettings>
-                </GridColumn>
-            </GridColumns>
-
-            <GridEvents TValue="Recebimento"
-                        OnActionBegin="OnActionBegin"
-                        OnActionComplete="OnActionComplete"
-                        OnActionFailure="OnActionFailure">
-            </GridEvents>
-        </SfGrid>
-    }
-    else if (!_isAuthenticated)
-    {
-        <div class="alert alert-warning">
-            <h4>Acesso Negado</h4>
-            <p>Você precisa estar autenticado para visualizar esta página.</p>
-            <button class="btn btn-primary" @onclick="RedirectToLogin">Fazer Login</button>
+        <div class="table-wrapper">
+            <MudDataGrid T="Recebimento" ServerData="@LoadData" 
+                    Striped="true" 
+                    Hover="true" 
+                    Dense="true" 
+                    Filterable="true" 
+                    FilterMode="DataGridFilterMode.ColumnFilterRow"
+                    ColumnResizeMode="ResizeMode.Column" ExpandSingleRow="_expandSingleRow">
+                <Columns>
+                    <HierarchyColumn T="Recebimento" />
+                    <PropertyColumn Property="x => x.IdRecebimento" Title="ID" Sortable="false" Filterable="false" />
+                    <PropertyColumn Property="x => x.Registro" Title="Registo" Format="dd/MM/yyyy HH:mm" />
+                    <PropertyColumn Property="x => x.NomeRecebedor" Title="Recebedor" />
+                    <PropertyColumn Property="x => x.EmailRecebedor" Title="E-mail" />
+                    <PropertyColumn Property="x => x.NomeFornecedor" Title="Fornecedor" />
+                    <PropertyColumn Property="x => x.DataRecebimento" Title="Data Receb." Format="d" />
+                    <PropertyColumn Property="x => x.HoraRecebimento" Title="Hora" Format="t" />
+                </Columns>
+                <PagerContent>
+                    <MudDataGridPager T="Recebimento" />
+                </PagerContent>
+                <ChildRowContent Context="gridContext">
+                    <MudCard Elevation="0" Class="pa-4" Style="background-color: #f0fdf4;">
+                        <MudCardContent>
+                            <MudText Typo="Typo.h6">Detalhes Adicionais</MudText>
+                            <MudGrid Class="mt-2">
+                                <MudItem xs="12">
+                                    <strong>Observações:</strong> @gridContext.Item.Observacoes
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <strong>Nota Fiscal:</strong> @gridContext.Item.NumeroNotaFiscal
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <strong>Chave PIX:</strong> @gridContext.Item.TitularChavePix
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <strong>Chave PIX:</strong> @gridContext.Item.ChavePix
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <strong>Foto NF:</strong> @gridContext.Item.CaminhoFotoNotaFiscal
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <strong>Documentos:</strong> @gridContext.Item.CaminhoFotoDocumentos
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </ChildRowContent>
+            </MudDataGrid>
         </div>
-    }
-    else if (_disposed)
+
+    </Authorized>
+    <NotAuthorized>
+        <MudAlert Severity="Severity.Warning">Você precisa de fazer login para ver esta página.</MudAlert>
+    </NotAuthorized>
+</AuthorizeView>
+@code {
+    private bool _expandSingleRow = false;
+
+    private async Task<GridData<Recebimento>> LoadData(GridState<Recebimento> state)
     {
-        <div class="alert alert-info">
-            <p>Componente foi finalizado.</p>
-        </div>
-    }
-
-
-@code
-{
-    private bool _disposed = false;
-    private bool _isAuthenticated = false;
-    private IDictionary<string, string> _headers = new Dictionary<string, string>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (_disposed) return;
-        
         try
         {
-            // Verifica estado de autenticação
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            _isAuthenticated = authState.User.Identity?.IsAuthenticated ?? false;
-            
-            Console.WriteLine($"Usuário autenticado: {_isAuthenticated}");
-            
-            if (_isAuthenticated)
+            await using var dbContext = await DbContextFactory.CreateDbContextAsync();
+            IQueryable<Recebimento> query = dbContext.Recebimentos.AsQueryable();
+
+            // Lógica de Filtragem
+            foreach (var filter in state.FilterDefinitions)
             {
-                // Adiciona headers de autenticação se necessário
-                _headers["Accept"] = "application/json";
-                _headers["Content-Type"] = "application/json";
-            }
-            
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro na inicialização: {ex.Message}");
-        }
-    }
-
-    private void RedirectToLogin()
-    {
-        Navigation.NavigateTo("/login", true);
-    }
-
-    private void OnActionBegin(ActionEventArgs<Recebimento> args)
-    {
-        if (_disposed) return;
-        
-        try
-        {
-            Console.WriteLine($"Ação iniciada: {args.RequestType}");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro em OnActionBegin: {ex.Message}");
-        }
-    }
-
-    private void OnActionComplete(ActionEventArgs<Recebimento> args)
-    {
-        if (_disposed) return;
-        
-        try
-        {
-            Console.WriteLine($"Ação completada: {args.RequestType}");
-            SafeStateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro em OnActionComplete: {ex.Message}");
-        }
-    }
-
-    private void OnActionFailure(FailureEventArgs args)
-    {
-        if (_disposed) return;
-        
-        try
-        {
-            Console.WriteLine($"Falha na ação: {args.Error?.Message}");
-            
-            // Se for erro de autenticação, redireciona para login
-            if (args.Error?.Message?.Contains("Unauthorized") == true)
-            {
-                Console.WriteLine("Erro de autorização detectado, redirecionando para login");
-                InvokeAsync(() => Navigation.NavigateTo("/login", true));
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Erro em OnActionFailure: {ex.Message}");
-        }
-    }
-
-    private void SafeStateHasChanged()
-    {
-        if (_disposed) return;
-
-        try
-        {
-            InvokeAsync(() =>
-            {
-                if (!_disposed)
+                if (filter.Value == null) continue;
+                var filterValue = filter.Value.ToString();
+                switch (filter.Column.PropertyName)
                 {
-                    StateHasChanged();
+                    case nameof(Recebimento.NomeFornecedor):
+                        query = query.Where(r => r.NomeFornecedor.Contains(filterValue));
+                        break;
+                    case nameof(Recebimento.NomeRecebedor):
+                        query = query.Where(r => r.NomeRecebedor.Contains(filterValue));
+                        break;
                 }
-            });
-        }
-        catch (ObjectDisposedException)
-        {
-            // Componente já foi descartado, ignora
+            }
+
+            // Lógica de Ordenação
+            if (state.SortDefinitions.Any())
+            {
+                var sort = state.SortDefinitions.First();
+                query = query.OrderBy($"{sort.SortBy} {(sort.Descending ? "descending" : "ascending")}");
+            }
+            else
+            {
+                query = query.OrderByDescending(r => r.Registro);
+            }
+
+            var totalItems = await query.CountAsync();
+            var items = await query.Skip(state.Page * state.PageSize).Take(state.PageSize).ToListAsync();
+
+            return new GridData<Recebimento>() { TotalItems = totalItems, Items = items };
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao atualizar estado: {ex.Message}");
+            Console.WriteLine($"ERRO AO CARREGAR DADOS: {ex}");
+            // Retorna dados vazios em caso de erro para não quebrar a aplicação.
+            return new GridData<Recebimento>() { TotalItems = 0, Items = Enumerable.Empty<Recebimento>() };
         }
-    }
-
-    public void Dispose()
-    {
-        if (_disposed) return;
-        
-        _disposed = true;
-        Console.WriteLine("Componente Recebimentos sendo descartado");
-        
-        // O Blazor e Syncfusion lidam automaticamente com a limpeza do Grid
-        // Não precisamos fazer descarte manual específico do SfGrid
     }
 }

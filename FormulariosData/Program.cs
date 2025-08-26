@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
-using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +32,6 @@ builder.Services.AddRazorComponents()
 
 // Registra os serviços do MudBlazor e Syncfusion
 builder.Services.AddMudServices();
-builder.Services.AddSyncfusionBlazor();
 
 // Configuração aprimorada do Blazor Server para evitar ObjectDisposedException
 builder.Services.AddServerSideBlazor(options =>

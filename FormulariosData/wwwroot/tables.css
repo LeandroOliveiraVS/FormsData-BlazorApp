@@ -1,0 +1,66 @@
+﻿/* Define a paleta de cores para a tabela */
+:root {
+    --sf-primary: #0c7654;
+    --sf-primary-dark: #0c4454;
+    --sf-background: #c7dcd7;
+    --sf-surface: #fff;
+    --sf-text-primary: #0c4454;
+    --sf-border: #dee2e6; /* Um cinza claro para as bordas internas */
+}
+
+/* Contêiner personalizado para a rolagem */
+.table-wrapper {
+    
+    border: 1px solid var(--sf-primary);
+    border-radius: 8px;
+}
+
+/* Estiliza o contêiner do MudDataGrid */
+.mud-table-container {
+    border: 1px solid var(--sf-primary);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    overflow-x: auto;
+}
+
+/* Estiliza o cabeçalho da tabela */
+.mud-table-head .mud-table-cell {
+    background-color: var(--sf-primary) !important;
+    color: white !important;
+    font-weight: 600;
+}
+
+/* Estiliza os ícones de ordenação e filtro no cabeçalho */
+.mud-table-head .mud-icon-button-label,
+.mud-table-head .mud-icon-root {
+    color: white !important;
+}
+
+/* Estiliza as linhas da tabela */
+.mud-table-row {
+    background-color: var(--sf-surface);
+}
+
+    /* Efeito de hover nas linhas */
+    .mud-table-row:hover {
+        background-color: #f0fdf4 !important; /* Um verde muito claro */
+    }
+
+/* Estiliza as bordas internas da tabela */
+.mud-table-cell {
+    border-color: var(--sf-border);
+    color: var(--sf-text-primary);
+    white-space: nowrap;
+}
+
+/* Estiliza a paginação */
+.mud-table-pagination {
+    background-color: var(--sf-surface);
+    color: var(--sf-text-primary);
+    border-top: 1px solid var(--sf-primary);
+}
+
+    .mud-table-pagination .mud-select-input,
+    .mud-table-pagination .mud-icon-root {
+        color: var(--sf-text-primary);
+    }
